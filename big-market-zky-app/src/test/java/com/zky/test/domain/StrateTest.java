@@ -30,7 +30,7 @@ public class StrateTest {
     /**
      * 策略ID；100001L、100002L 装配的时候创建策略表写入到 Redis Map 中
      */
-    @Test
+    @Before
     public void test_strategyArmory() {
         boolean success = strategyArmory.assembleLotteryStrategy(100001L);
         log.info("测试结果：{}", success);

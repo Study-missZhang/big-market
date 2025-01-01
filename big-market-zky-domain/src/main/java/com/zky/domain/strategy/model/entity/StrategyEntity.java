@@ -24,24 +24,18 @@ public class StrategyEntity {
     private Long strategyId;
     /** 抽奖策略描述 */
     private String strategyDesc;
-    /** 抽奖规则模型*/
+    /** 抽奖规则模型 rule_weight,rule_blacklist */
     private String ruleModels;
 
-    //拆分抽奖模型
-    public String[] ruleModels(){
-        if(StringUtils.isBlank(ruleModels)){
-            return null;
-        }
+    public String[] ruleModels() {
+        if (StringUtils.isBlank(ruleModels)) return null;
         return ruleModels.split(Constants.SPLIT);
     }
 
-    //获取权重
-    public String getRuleWeight(){
+    public String getRuleWeight() {
         String[] ruleModels = this.ruleModels();
-        for(String ruleModel : ruleModels){
-            if("rule_weight".equals(ruleModel)){
-                return ruleModel;
-            }
+        for (String ruleModel : ruleModels) {
+            if ("rule_weight".equals(ruleModel)) return ruleModel;
         }
         return null;
     }
