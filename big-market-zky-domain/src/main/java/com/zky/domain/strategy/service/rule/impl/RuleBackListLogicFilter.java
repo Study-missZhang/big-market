@@ -2,7 +2,7 @@ package com.zky.domain.strategy.service.rule.impl;
 
 import com.zky.domain.strategy.model.entity.RuleActionEntity;
 import com.zky.domain.strategy.model.entity.RuleMatterEntity;
-import com.zky.domain.strategy.model.vo.RuleLogicCheckTypeVO;
+import com.zky.domain.strategy.model.valobj.RuleLogicCheckTypeVO;
 import com.zky.domain.strategy.repository.IStrategyRepository;
 import com.zky.domain.strategy.service.annotation.LogicStrategy;
 import com.zky.domain.strategy.service.rule.ILogicFilter;
