@@ -1,8 +1,8 @@
-package com.zky.domain.strategy.service.rule.factor;
+package com.zky.domain.strategy.service.rule.filter.factory;
 
 import com.zky.domain.strategy.model.entity.RuleActionEntity;
 import com.zky.domain.strategy.service.annotation.LogicStrategy;
-import com.zky.domain.strategy.service.rule.ILogicFilter;
+import com.zky.domain.strategy.service.rule.filter.ILogicFilter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -13,18 +13,19 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * @author: ZhangKaiYuan
- * Date: 2025/1/10
- * 规则工厂
+ * @author Fuzhengwei bugstack.cn @小傅哥
+ * @description 规则工厂
+ * @create 2023-12-31 11:23
  */
 @Service
 public class DefaultLogicFactory {
-    public Map<String, ILogicFilter<?>> logicFilterMap= new ConcurrentHashMap<>();
 
-    public DefaultLogicFactory(List<ILogicFilter<?>> logicFilters){
+    public Map<String, ILogicFilter<?>> logicFilterMap = new ConcurrentHashMap<>();
+
+    public DefaultLogicFactory(List<ILogicFilter<?>> logicFilters) {
         logicFilters.forEach(logic -> {
             LogicStrategy strategy = AnnotationUtils.findAnnotation(logic.getClass(), LogicStrategy.class);
-            if(null != strategy){
+            if (null != strategy) {
                 logicFilterMap.put(strategy.logicMode().getCode(), logic);
             }
         });
@@ -38,11 +39,8 @@ public class DefaultLogicFactory {
     @AllArgsConstructor
     public enum LogicModel {
 
-        RULE_WIGHT("rule_weight","【抽奖前规则】根据抽奖权重返回可抽奖范围KEY", "before"),
-        RULE_BLACKLIST("rule_blacklist","【抽奖前规则】黑名单规则过滤，命中黑名单则直接返回", "before"),
         RULE_LOCK("rule_lock", "【抽奖中规则】抽奖n次后，对应奖品可解锁抽奖", "center"),
         RULE_LUCK_AWARD("rule_luck_award", "【抽奖后规则】抽奖n次后，对应奖品可解锁抽奖", "after"),
-
         ;
 
         private final String code;
@@ -57,6 +55,6 @@ public class DefaultLogicFactory {
             return "after".equals(LogicModel.valueOf(code.toUpperCase()).type);
         }
 
-
     }
+
 }

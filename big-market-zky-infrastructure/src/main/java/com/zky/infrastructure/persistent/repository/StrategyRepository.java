@@ -28,6 +28,7 @@ import java.util.Map;
  */
 @Repository
 public class StrategyRepository implements IStrategyRepository {
+
     @Resource
     private IStrategyDao strategyDao;
     @Resource
@@ -39,17 +40,14 @@ public class StrategyRepository implements IStrategyRepository {
 
     @Override
     public List<StrategyAwardEntity> queryStrategyAwardList(Long strategyId) {
-        //优先从缓存中查询
+        // 优先从缓存获取
         String cacheKey = Constants.RedisKey.STRATEGY_AWARD_KEY + strategyId;
         List<StrategyAwardEntity> strategyAwardEntities = redisService.getValue(cacheKey);
-        //判断redis缓存中是否为空
-        if(null != strategyAwardEntities && !strategyAwardEntities.isEmpty()){
-            return strategyAwardEntities;
-        }
-        //redis缓存为空，则从数据库中获取
+        if (null != strategyAwardEntities && !strategyAwardEntities.isEmpty()) return strategyAwardEntities;
+        // 从库中获取数据
         List<StrategyAward> strategyAwards = strategyAwardDao.queryStrategyAwardListByStrategyId(strategyId);
         strategyAwardEntities = new ArrayList<>(strategyAwards.size());
-        for (StrategyAward strategyAward : strategyAwards){
+        for (StrategyAward strategyAward : strategyAwards) {
             StrategyAwardEntity strategyAwardEntity = StrategyAwardEntity.builder()
                     .strategyId(strategyAward.getStrategyId())
                     .awardId(strategyAward.getAwardId())
@@ -94,7 +92,7 @@ public class StrategyRepository implements IStrategyRepository {
         StrategyEntity strategyEntity = redisService.getValue(cacheKey);
         if (null != strategyEntity) return strategyEntity;
         Strategy strategy = strategyDao.queryStrategyByStrategyId(strategyId);
-        if(null == strategy) return StrategyEntity.builder().build();
+        if (null == strategy) return StrategyEntity.builder().build();
         strategyEntity = StrategyEntity.builder()
                 .strategyId(strategy.getStrategyId())
                 .strategyDesc(strategy.getStrategyDesc())
@@ -121,6 +119,11 @@ public class StrategyRepository implements IStrategyRepository {
     }
 
     @Override
+    public String queryStrategyRuleValue(Long strategyId, String ruleModel) {
+        return queryStrategyRuleValue(strategyId, null, ruleModel);
+    }
+
+    @Override
     public String queryStrategyRuleValue(Long strategyId, Integer awardId, String ruleModel) {
         StrategyRule strategyRule = new StrategyRule();
         strategyRule.setStrategyId(strategyId);
@@ -134,7 +137,7 @@ public class StrategyRepository implements IStrategyRepository {
         StrategyAward strategyAward = new StrategyAward();
         strategyAward.setStrategyId(strategyId);
         strategyAward.setAwardId(awardId);
-        String ruleModels= strategyAwardDao.queryStrategyAwardRuleModels(strategyAward);
+        String ruleModels = strategyAwardDao.queryStrategyAwardRuleModels(strategyAward);
         return StrategyAwardRuleModelVO.builder().ruleModels(ruleModels).build();
     }
 

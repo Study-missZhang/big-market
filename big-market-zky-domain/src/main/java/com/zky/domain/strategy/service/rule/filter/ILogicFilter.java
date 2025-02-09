@@ -1,13 +1,15 @@
-package com.zky.domain.strategy.service.rule;
+package com.zky.domain.strategy.service.rule.filter;
 
 import com.zky.domain.strategy.model.entity.RuleActionEntity;
 import com.zky.domain.strategy.model.entity.RuleMatterEntity;
 
 /**
- * @author: ZhangKaiYuan
- * Date: 2025/1/10
- * 抽奖规则过滤接口
+ * @author Fuzhengwei bugstack.cn @小傅哥
+ * @description 抽奖规则过滤接口
+ * @create 2024-01-06 09:55
  */
 public interface ILogicFilter<T extends RuleActionEntity.RaffleEntity> {
+
     RuleActionEntity<T> filter(RuleMatterEntity ruleMatterEntity);
+
 }

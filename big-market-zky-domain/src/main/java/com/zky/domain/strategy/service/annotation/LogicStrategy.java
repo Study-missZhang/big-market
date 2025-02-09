@@ -1,7 +1,8 @@
 package com.zky.domain.strategy.service.annotation;
 
 
-import com.zky.domain.strategy.service.rule.factor.DefaultLogicFactory;
+
+import com.zky.domain.strategy.service.rule.filter.factory.DefaultLogicFactory;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
