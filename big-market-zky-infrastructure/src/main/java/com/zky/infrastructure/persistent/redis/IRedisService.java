@@ -246,4 +246,19 @@ public interface IRedisService {
      */
     <T> RBloomFilter<T> getBloomFilter(String key);
 
+    /**
+     * Redis中设置库存值
+     * @param key
+     * @param value
+     */
+    void setAtomicLong(String key, Integer value);
+
+    /**
+     * Redis 获取值
+     * @param key
+     * @return
+     */
+    Long getAtomicLong(String key);
+
+    Boolean setNx(String key);
 }

@@ -1,4 +1,4 @@
-package com.zky.api.response;
+package com.zky.types.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,16 +7,17 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+/**
+ * @author: ZhangKaiYuan
+ * @description: Response
+ * @create: 2025/2/16
+ */
 @Data
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Response<T> implements Serializable {
-
-    private static final long serialVersionUID = 7000723935764546321L;
-
     private String code;
     private String info;
     private T data;
-
 }
