@@ -1,4 +1,4 @@
-package com.zky.test.domain;
+package com.zky.test.domain.strategy;
 
 import com.alibaba.fastjson.JSON;
 import com.zky.domain.strategy.service.armory.IStrategyArmory;

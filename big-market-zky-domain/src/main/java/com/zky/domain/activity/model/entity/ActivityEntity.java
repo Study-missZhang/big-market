@@ -1,18 +1,23 @@
-package com.zky.infrastructure.persistent.po;
+package com.zky.domain.activity.model.entity;
 
+import com.zky.domain.activity.model.valobj.ActivityStateVO;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 /**
  * @author: ZhangKaiYuan
- * @description: 抽奖活动表
- * @create: 2025/2/25
+ * @description: 抽奖活动实体对象
+ * @create: 2025/2/26
  */
 @Data
-public class RaffleActivity {
-    /** 自增ID **/
-    private Long id;
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class ActivityEntity {
     /** 活动ID **/
     private Long activityId;
     /** 活动名称 **/
@@ -26,10 +31,5 @@ public class RaffleActivity {
     /** 抽奖策略ID **/
     private Long strategyId;
     /** 活动状态 **/
-    private String state;
-    /** 创建时间 */
-    private Date createTime;
-    /** 更新时间 */
-    private Date updateTime;
-
+    private ActivityStateVO state;
 }

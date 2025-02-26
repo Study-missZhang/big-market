@@ -1,18 +1,23 @@
-package com.zky.infrastructure.persistent.po;
+package com.zky.domain.activity.model.entity;
 
+import com.zky.domain.activity.model.valobj.OrderStateVO;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 /**
  * @author: ZhangKaiYuan
- * @description: 抽奖活动单
- * @create: 2025/2/25
+ * @description: 抽奖活动订单实体对象
+ * @create: 2025/2/26
  */
 @Data
-public class RaffleActivityOrder {
-    /** 自增ID **/
-    private Long id;
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class ActivityOrderEntity {
     /** 用户ID **/
     private String userId;
     /** 活动ID **/
@@ -26,16 +31,11 @@ public class RaffleActivityOrder {
     /** 下单时间 **/
     private Date orderTime;
     /** 总次数 **/
-    private int totalCount;
+    private Integer totalCount;
     /** 日次数 **/
-    private int dayCount;
+    private Integer dayCount;
     /** 月次数 **/
-    private int monthCount;
+    private Integer monthCount;
     /** 订单状态（not_used、used、expire） **/
-    private String state;
-    /** 创建时间 */
-    private Date createTime;
-    /** 更新时间 */
-    private Date updateTime;
-
+    private OrderStateVO state;
 }

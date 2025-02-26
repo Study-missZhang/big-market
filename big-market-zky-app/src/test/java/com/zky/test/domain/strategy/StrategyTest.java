@@ -1,4 +1,4 @@
-package com.zky.test.domain;
+package com.zky.test.domain.strategy;
 
 import com.zky.domain.strategy.service.armory.IStrategyArmory;
 import com.zky.domain.strategy.service.armory.IStrategyDispatch;
