@@ -1,9 +1,16 @@
 package com.zky.domain.activity.service;
 
 import com.alibaba.fastjson.JSON;
+import com.zky.domain.activity.model.aggregate.CreateOrderAggregate;
 import com.zky.domain.activity.model.entity.*;
 import com.zky.domain.activity.repository.IActivityRepository;
+import com.zky.domain.activity.service.rule.IActionChain;
+import com.zky.domain.activity.service.rule.factory.DefaultActivityChainFactory;
+import com.zky.types.enums.ResponseCode;
+import com.zky.types.exception.AppException;
+import com.zky.types.model.Response;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Resource;
 
@@ -13,30 +20,46 @@ import javax.annotation.Resource;
  * @create: 2025/2/26
  */
 @Slf4j
-public abstract class AbstractRaffleActivity implements IRaffleOrder{
+public abstract class AbstractRaffleActivity extends RaffleActivitySupport implements IRaffleOrder{
 
-
-    protected IActivityRepository activityRepository;
-
-    //使用构造函数注入
-    public AbstractRaffleActivity(IActivityRepository activityRepository) {
-        this.activityRepository = activityRepository;
+    public AbstractRaffleActivity(IActivityRepository activityRepository, DefaultActivityChainFactory defaultActivityChainFactory) {
+        super(activityRepository, defaultActivityChainFactory);
     }
 
-    //获得活动参与订单实体
+
     @Override
-    public ActivityOrderEntity createRaffleActivityOrder(ActivityShopCartEntity activityShopCartEntity) {
-        //1.通过sku查询活动信息
-        ActivitySkuEntity activitySkuEntity = activityRepository.queryActivitySku(activityShopCartEntity.getSku());
-        //2.查询活动信息
-        ActivityEntity activityEntity = activityRepository.queryRaffleActivityByActivityId(activitySkuEntity.getActivityId());
-        //3.查询活动次数
-        ActivityCountEntity activityCountEntity = activityRepository.queryRaffleActivityCountByActivityCountId(activitySkuEntity.getActivityCountId());
+    public String createSkuRechargeOrder(SkuRechargeEntity skuRechargeEntity) {
+        //1.参数校验
+        String userId = skuRechargeEntity.getUserId();
+        Long sku = skuRechargeEntity.getSku();
+        String outBusinessNo = skuRechargeEntity.getOutBusinessNo();
+        if(null == sku || StringUtils.isBlank(userId) || StringUtils.isBlank(outBusinessNo)){
+            throw new AppException(ResponseCode.ILLEGAL_PARAMETER.getCode(), ResponseCode.ILLEGAL_PARAMETER.getInfo());
+        }
 
-        log.info("查询结果： {} {} {}", JSON.toJSONString(activitySkuEntity),
-                JSON.toJSONString(activityEntity),
-                JSON.toJSONString(activityCountEntity));
+        //2.查询基础信息
+        //2.1 通过sku查询活动信息
+        ActivitySkuEntity activitySkuEntity = queryActivitySku(sku);
+        //2.2 查询活动信息
+        ActivityEntity activityEntity = queryRaffleActivityByActivityId(activitySkuEntity.getActivityId());
+        //2.3 查询活动次数
+        ActivityCountEntity activityCountEntity = queryRaffleActivityCountByActivityCountId(activitySkuEntity.getActivityCountId());
 
-        return ActivityOrderEntity.builder().build();
+        //3.活动规则责任链过滤 todo 后续处理规则过滤流程，暂时也不处理责任链结果
+        IActionChain actionChain = defaultActivityChainFactory.openActionChain();
+        boolean success = actionChain.action(activitySkuEntity, activityEntity, activityCountEntity);
+
+        //4.构建订单聚合对象
+        CreateOrderAggregate createOrderAggregate = buildOrderAggregate(skuRechargeEntity, activitySkuEntity, activityEntity, activityCountEntity);
+
+        //5.保存订单
+        doSaveOrder(createOrderAggregate);
+
+        //6.发送订单
+        return createOrderAggregate.getActivityOrderEntity().getOrderId();
     }
+
+    protected abstract CreateOrderAggregate buildOrderAggregate(SkuRechargeEntity skuRechargeEntity, ActivitySkuEntity activitySkuEntity, ActivityEntity activityEntity, ActivityCountEntity activityCountEntity);
+
+    protected abstract void doSaveOrder(CreateOrderAggregate createOrderAggregate);
 }

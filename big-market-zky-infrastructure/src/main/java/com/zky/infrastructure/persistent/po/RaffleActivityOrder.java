@@ -13,6 +13,8 @@ import java.util.Date;
 public class RaffleActivityOrder {
     /** 自增ID **/
     private Long id;
+    /** sku **/
+    private Long sku;
     /** 用户ID **/
     private String userId;
     /** 活动ID **/
@@ -33,6 +35,8 @@ public class RaffleActivityOrder {
     private int monthCount;
     /** 订单状态（not_used、used、expire） **/
     private String state;
+    /** 业务仿重ID - 外部透传的，确保幂等 **/
+    private String outBusinessNo;
     /** 创建时间 */
     private Date createTime;
     /** 更新时间 */

@@ -19,6 +19,10 @@ public class RaffleActivityAccount {
     private Long activityId;
     /** 总次数 **/
     private int totalCount;
+    /**
+     * 总次数-剩余
+     */
+    private Integer totalCountSurplus;
     /** 日次数 **/
     private int dayCount;
     /** 日次数-剩余 **/

@@ -1,5 +1,6 @@
 package com.zky.domain.activity.repository;
 
+import com.zky.domain.activity.model.aggregate.CreateOrderAggregate;
 import com.zky.domain.activity.model.entity.ActivityCountEntity;
 import com.zky.domain.activity.model.entity.ActivityEntity;
 import com.zky.domain.activity.model.entity.ActivitySkuEntity;
@@ -19,4 +20,7 @@ public interface IActivityRepository {
     ActivityEntity queryRaffleActivityByActivityId(Long activityId);
 
     ActivityCountEntity queryRaffleActivityCountByActivityCountId(Long activityCountId);
+
+
+    void doSaveOrder(CreateOrderAggregate createOrderAggregate);
 }
