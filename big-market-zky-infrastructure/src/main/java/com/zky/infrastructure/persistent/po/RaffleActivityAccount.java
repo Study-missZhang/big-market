@@ -6,7 +6,7 @@ import java.util.Date;
 
 /**
  * @author: ZhangKaiYuan
- * @description: 抽奖活动账户
+ * @description: 抽奖活动账户-总次数
  * @create: 2025/2/25
  */
 @Data
