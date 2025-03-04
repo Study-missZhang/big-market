@@ -32,4 +32,5 @@ public class ActivityEntity {
     private Long strategyId;
     /** 活动状态 **/
     private ActivityStateVO state;
+
 }

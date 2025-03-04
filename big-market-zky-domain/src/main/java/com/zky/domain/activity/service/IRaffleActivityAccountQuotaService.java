@@ -1,7 +1,5 @@
 package com.zky.domain.activity.service;
 
-import com.zky.domain.activity.model.entity.ActivityOrderEntity;
-import com.zky.domain.activity.model.entity.ActivityShopCartEntity;
 import com.zky.domain.activity.model.entity.SkuRechargeEntity;
 
 /**
@@ -9,7 +7,7 @@ import com.zky.domain.activity.model.entity.SkuRechargeEntity;
  * @description: 抽奖活动订单接口
  * @create: 2025/2/26
  */
-public interface IRaffleOrder {
+public interface IRaffleActivityAccountQuotaService {
 
     /**
      * 创建 sku 账户充值订单，给用户增加抽奖次数

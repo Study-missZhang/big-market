@@ -1,9 +1,8 @@
 package com.zky.domain.activity.repository;
 
 import com.zky.domain.activity.model.aggregate.CreateOrderAggregate;
-import com.zky.domain.activity.model.entity.ActivityCountEntity;
-import com.zky.domain.activity.model.entity.ActivityEntity;
-import com.zky.domain.activity.model.entity.ActivitySkuEntity;
+import com.zky.domain.activity.model.aggregate.CreatePartakeOrderAggregate;
+import com.zky.domain.activity.model.entity.*;
 import com.zky.domain.activity.model.valobj.ActivitySkuStockKeyVO;
 
 import java.util.Date;
@@ -37,5 +36,15 @@ public interface IActivityRepository {
     void updateActivitySkuStock(Long sku);
 
     void clearActivitySkuStock(Long sku);
+
+    UserRaffleOrderEntity queryNoUserRaffleOrder(PartakeRaffleActivityEntity partakeRaffleActivityEntity);
+
+    ActivityAccountEntity queryActivityAccountByUserId(String userId, Long activityId);
+
+    ActivityAccountMonthEntity queryActivityAccountMonthByUserId(String userId, Long activityId);
+
+    ActivityAccountDayEntity queryActivityAccountDayByUserId(String userId, Long activityId);
+
+    void saveCreatePartakeOrderAggregate(CreatePartakeOrderAggregate createPartakeOrderAggregate);
 
 }

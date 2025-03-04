@@ -1,4 +1,4 @@
-package com.zky.domain.activity.service.rule;
+package com.zky.domain.activity.service.quota.rule;
 
 /**
  * @author: ZhangKaiYuan

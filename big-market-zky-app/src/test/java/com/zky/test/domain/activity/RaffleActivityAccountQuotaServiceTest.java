@@ -1,10 +1,7 @@
 package com.zky.test.domain.activity;
 
-import com.alibaba.fastjson2.JSON;
-import com.zky.domain.activity.model.entity.ActivityOrderEntity;
-import com.zky.domain.activity.model.entity.ActivityShopCartEntity;
 import com.zky.domain.activity.model.entity.SkuRechargeEntity;
-import com.zky.domain.activity.service.IRaffleOrder;
+import com.zky.domain.activity.service.IRaffleActivityAccountQuotaService;
 import com.zky.domain.activity.service.armory.IActivityArmory;
 import com.zky.types.exception.AppException;
 import lombok.extern.slf4j.Slf4j;
@@ -20,16 +17,16 @@ import java.util.concurrent.CountDownLatch;
 
 /**
  * @author: ZhangKaiYuan
- * @description:
+ * @description: 抽奖活动参与测试
  * @create: 2025/2/26
  */
 @Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class RaffleOrderTest {
+public class RaffleActivityAccountQuotaServiceTest {
 
     @Resource
-    private IRaffleOrder raffleOrder;
+    private IRaffleActivityAccountQuotaService raffleOrder;
     @Resource
     private IActivityArmory activityArmory;
 

@@ -1,8 +1,4 @@
-package com.zky.domain.activity.service.rule;
-
-import com.zky.domain.activity.model.entity.ActivityCountEntity;
-import com.zky.domain.activity.model.entity.ActivityEntity;
-import com.zky.domain.activity.model.entity.ActivitySkuEntity;
+package com.zky.domain.activity.service.quota.rule;
 
 /**
  * @author: ZhangKaiYuan

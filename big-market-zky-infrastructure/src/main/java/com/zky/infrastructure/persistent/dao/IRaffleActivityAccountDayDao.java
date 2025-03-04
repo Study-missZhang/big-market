@@ -1,5 +1,7 @@
 package com.zky.infrastructure.persistent.dao;
 
+import cn.bugstack.middleware.db.router.annotation.DBRouter;
+import com.zky.infrastructure.persistent.po.RaffleActivityAccountDay;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -9,4 +11,11 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface IRaffleActivityAccountDayDao {
+    @DBRouter
+    RaffleActivityAccountDay queryActivityAccountDayByUserId(RaffleActivityAccountDay raffleActivityAccountDayReq);
+
+
+    int updateActivityAccountDay(RaffleActivityAccountDay raffleActivityAccountDay);
+
+    void insertActivityAccountDay(RaffleActivityAccountDay build);
 }

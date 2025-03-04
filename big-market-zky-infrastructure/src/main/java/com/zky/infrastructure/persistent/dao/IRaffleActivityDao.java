@@ -1,6 +1,7 @@
 package com.zky.infrastructure.persistent.dao;
 
 import com.zky.infrastructure.persistent.po.RaffleActivity;
+import com.zky.infrastructure.persistent.po.RaffleActivityAccount;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

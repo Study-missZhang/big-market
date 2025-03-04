@@ -1,13 +1,12 @@
-package com.zky.domain.activity.service.rule.impl;
+package com.zky.domain.activity.service.quota.rule.impl;
 
 import com.zky.domain.activity.model.entity.ActivityCountEntity;
 import com.zky.domain.activity.model.entity.ActivityEntity;
 import com.zky.domain.activity.model.entity.ActivitySkuEntity;
 import com.zky.domain.activity.model.valobj.ActivityStateVO;
-import com.zky.domain.activity.service.rule.AbstractActionChain;
+import com.zky.domain.activity.service.quota.rule.AbstractActionChain;
 import com.zky.types.enums.ResponseCode;
 import com.zky.types.exception.AppException;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
