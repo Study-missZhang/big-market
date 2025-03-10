@@ -38,6 +38,8 @@ public class DecisionTreeEngine implements IDecisionTreeEngine {
          */
         String nextNode = ruleTreeVO.getTreeRootRuleNode();
         Map<String, RuleTreeNodeVO> treeNodeMap = ruleTreeVO.getTreeNodeMap();
+
+        // 获取起始节点「根节点记录了第一个要执行的规则」
         RuleTreeNodeVO ruleTreeNode = treeNodeMap.get(nextNode);
 
         //循环这个节点，判断是否还有下一个规则

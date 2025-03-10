@@ -10,8 +10,10 @@ import com.zky.domain.award.repository.IAwardRepository;
 import com.zky.infrastructure.event.EventPublisher;
 import com.zky.infrastructure.persistent.dao.ITaskDao;
 import com.zky.infrastructure.persistent.dao.IUserAwardRecordDao;
+import com.zky.infrastructure.persistent.dao.IUserRaffleOrderDao;
 import com.zky.infrastructure.persistent.po.Task;
 import com.zky.infrastructure.persistent.po.UserAwardRecord;
+import com.zky.infrastructure.persistent.po.UserRaffleOrder;
 import com.zky.types.enums.ResponseCode;
 import com.zky.types.exception.AppException;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +42,8 @@ public class AwardRepository implements IAwardRepository {
     private TransactionTemplate transactionTemplate;
     @Resource
     private EventPublisher eventPublisher;
+    @Resource
+    private IUserRaffleOrderDao userRaffleOrderDao;
 
 
     @Override
@@ -53,51 +57,61 @@ public class AwardRepository implements IAwardRepository {
         Integer awardId = userAwardRecordEntity.getAwardId();
 
         UserAwardRecord userAwardRecord = new UserAwardRecord();
-        userAwardRecord.setUserId(userId);
-        userAwardRecord.setActivityId(activityId);
+        userAwardRecord.setUserId(userAwardRecordEntity.getUserId());
+        userAwardRecord.setActivityId(userAwardRecordEntity.getActivityId());
         userAwardRecord.setStrategyId(userAwardRecordEntity.getStrategyId());
         userAwardRecord.setOrderId(userAwardRecordEntity.getOrderId());
-        userAwardRecord.setAwardId(awardId);
+        userAwardRecord.setAwardId(userAwardRecordEntity.getAwardId());
         userAwardRecord.setAwardTitle(userAwardRecordEntity.getAwardTitle());
         userAwardRecord.setAwardTime(userAwardRecordEntity.getAwardTime());
         userAwardRecord.setAwardState(userAwardRecordEntity.getAwardState().getCode());
 
         Task task = new Task();
-        task.setUserId(userId);
+        task.setUserId(taskEntity.getUserId());
         task.setTopic(taskEntity.getTopic());
         task.setMessageId(taskEntity.getMessageId());
         task.setMessage(JSON.toJSONString(taskEntity.getMessage()));
         task.setState(taskEntity.getState().getCode());
 
+        UserRaffleOrder userRaffleOrderReq = new UserRaffleOrder();
+        userRaffleOrderReq.setUserId(userAwardRecordEntity.getUserId());
+        userRaffleOrderReq.setOrderId(userAwardRecordEntity.getOrderId());
         //事务进行sql操作
-        try{
+        try {
             dbRouter.doRouter(userId);
             transactionTemplate.execute(status -> {
-                try{
-                    //写入任务
+                try {
+                    // 写入记录
                     userAwardRecordDao.insert(userAwardRecord);
-                    //写入任务
+                    // 写入任务
                     taskDao.insert(task);
+                    // 更新抽奖单
+                    int count = userRaffleOrderDao.updateUserRaffleOrderStateUsed(userRaffleOrderReq);
+                    if (1 != count) {
+                        status.setRollbackOnly();
+                        log.error("写入中奖记录，用户抽奖单已使用过，不可重复抽奖 userId: {} activityId: {} awardId: {}", userId, activityId, awardId);
+                        throw new AppException(ResponseCode.ACTIVITY_ORDER_ERROR.getCode(), ResponseCode.ACTIVITY_ORDER_ERROR.getInfo());
+                    }
                     return 1;
-                }catch (DuplicateKeyException e){
+                } catch (DuplicateKeyException e) {
                     status.setRollbackOnly();
                     log.error("写入中奖记录，唯一索引冲突 userId: {} activityId: {} awardId: {}", userId, activityId, awardId, e);
                     throw new AppException(ResponseCode.INDEX_DUP.getCode(), e);
                 }
             });
-        }finally {
+        } finally {
             dbRouter.clear();
         }
 
-        //发送MQ消息
-        try{
+        try {
+            // 发送消息【在事务外执行，如果失败还有任务补偿】
             eventPublisher.publish(task.getTopic(), task.getMessage());
-            //更新task发送成功任务
+            // 更新数据库记录，task 任务表
             taskDao.updateTaskSendMessageCompleted(task);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("写入中奖记录，发送MQ消息失败 userId: {} topic: {}", userId, task.getTopic());
-            //消息发送失败，更新task发送失败任务
             taskDao.updateTaskSendMessageFail(task);
         }
+
     }
 }

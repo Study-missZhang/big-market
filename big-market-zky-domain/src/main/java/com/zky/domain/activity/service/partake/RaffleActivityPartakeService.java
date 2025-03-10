@@ -21,8 +21,8 @@ import java.util.Date;
 public class RaffleActivityPartakeService extends AbstractRaffleActivityPartake{
 
 
-    private final SimpleDateFormat dateFormatMonth = new SimpleDateFormat("yyyy-mm");
-    private final SimpleDateFormat dateFormatDay = new SimpleDateFormat("yyyy-mm-dd");
+    private final SimpleDateFormat dateFormatMonth = new SimpleDateFormat("yyyy-MM");
+    private final SimpleDateFormat dateFormatDay = new SimpleDateFormat("yyyy-MM-dd");
 
 
     public RaffleActivityPartakeService(IActivityRepository activityRepository) {
@@ -42,7 +42,7 @@ public class RaffleActivityPartakeService extends AbstractRaffleActivityPartake{
         String day = dateFormatDay.format(currentDate);
 
         //2.查询月账户额度
-        ActivityAccountMonthEntity activityAccountMonthEntity = activityRepository.queryActivityAccountMonthByUserId(userId, activityId);
+        ActivityAccountMonthEntity activityAccountMonthEntity = activityRepository.queryActivityAccountMonthByUserId(userId, activityId, month);
         //2.1额度判断
         if(null != activityAccountMonthEntity && activityAccountMonthEntity.getMonthCountSurplus() <= 0){
             throw new AppException(ResponseCode.ACCOUNT_QUOTA_ERROR.getCode(), ResponseCode.ACCOUNT_QUOTA_ERROR.getInfo());
@@ -60,7 +60,7 @@ public class RaffleActivityPartakeService extends AbstractRaffleActivityPartake{
         }
 
         //3查询日账户额度
-        ActivityAccountDayEntity activityAccountDayEntity = activityRepository.queryActivityAccountDayByUserId(userId, activityId);
+        ActivityAccountDayEntity activityAccountDayEntity = activityRepository.queryActivityAccountDayByUserId(userId, activityId, day);
         //3.1额度判断
         if(null != activityAccountDayEntity && activityAccountDayEntity.getDayCountSurplus() <= 0){
             throw new AppException(ResponseCode.ACCOUNT_QUOTA_ERROR.getCode(), ResponseCode.ACCOUNT_QUOTA_ERROR.getInfo());
@@ -72,9 +72,9 @@ public class RaffleActivityPartakeService extends AbstractRaffleActivityPartake{
             activityAccountDayEntity = new ActivityAccountDayEntity();
             activityAccountDayEntity.setUserId(userId);
             activityAccountDayEntity.setActivityId(activityId);
-            activityAccountDayEntity.setDay(month);
-            activityAccountDayEntity.setDayCount(activityAccountEntity.getMonthCount());
-            activityAccountDayEntity.setDayCountSurplus(activityAccountEntity.getMonthCountSurplus());
+            activityAccountDayEntity.setDay(day);
+            activityAccountDayEntity.setDayCount(activityAccountEntity.getDayCount());
+            activityAccountDayEntity.setDayCountSurplus(activityAccountEntity.getDayCountSurplus());
         }
 
         //4.构建聚合对象

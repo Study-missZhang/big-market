@@ -31,6 +31,14 @@ public abstract class AbstractRaffleActivityPartake implements IRaffleActivityPa
     }
 
     @Override
+    public UserRaffleOrderEntity createOrder(String userId, Long activityId) {
+        return createOrder(PartakeRaffleActivityEntity.builder()
+                .userId(userId)
+                .activityId(activityId)
+                .build());
+    }
+
+    @Override
     public UserRaffleOrderEntity createOrder(PartakeRaffleActivityEntity partakeRaffleActivityEntity) {
         //0.获得基础信息
         String userId = partakeRaffleActivityEntity.getUserId();
@@ -39,6 +47,7 @@ public abstract class AbstractRaffleActivityPartake implements IRaffleActivityPa
 
         //1.获得校验:状态，时间
         ActivityEntity activityEntity = activityRepository.queryRaffleActivityByActivityId(activityId);
+
         if(!ActivityStateVO.open.equals(activityEntity.getState())){
             throw new AppException(ResponseCode.ACTIVITY_STATE_ERROR.getCode(), ResponseCode.ACTIVITY_SKU_STOCK_ERROR.getInfo());
         }
@@ -65,8 +74,11 @@ public abstract class AbstractRaffleActivityPartake implements IRaffleActivityPa
 
         //6.保存聚合对象(事务写库) - 一个领域内的一个聚合是一个事务操作
         activityRepository.saveCreatePartakeOrderAggregate(createPartakeOrderAggregate);
-        return null;
+
+        return userRaffleOrder;
     }
+
+
 
     protected abstract UserRaffleOrderEntity buildUserRaffleOrder(String userId, Long activityId, Date currentDate);
 

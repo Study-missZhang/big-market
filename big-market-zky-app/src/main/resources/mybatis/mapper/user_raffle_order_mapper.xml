@@ -27,4 +27,10 @@
         values (
                 #{userId}, #{activityId}, #{activityName}, #{strategyId}, #{orderId}, #{orderTime}, #{orderState}, now(), now())
     </insert>
+    
+    <update id="updateUserRaffleOrderStateUsed" parameterType="com.zky.infrastructure.persistent.po.UserRaffleOrder">
+        update user_raffle_order
+        set order_state = 'used', update_time = now()
+        where user_id = #{userId} and order_id = #{orderId} and order_state = 'create'
+   </update>
 </mapper>

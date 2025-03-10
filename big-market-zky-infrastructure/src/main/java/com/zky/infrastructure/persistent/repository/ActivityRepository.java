@@ -25,7 +25,9 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.annotation.Resource;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -285,10 +287,11 @@ public class ActivityRepository implements IActivityRepository {
     }
 
     @Override
-    public ActivityAccountMonthEntity queryActivityAccountMonthByUserId(String userId, Long activityId) {
+    public ActivityAccountMonthEntity queryActivityAccountMonthByUserId(String userId, Long activityId, String month) {
         RaffleActivityAccountMonth raffleActivityAccountMonthReq = new RaffleActivityAccountMonth();
         raffleActivityAccountMonthReq.setUserId(userId);
         raffleActivityAccountMonthReq.setActivityId(activityId);
+        raffleActivityAccountMonthReq.setMonth(month);
         RaffleActivityAccountMonth raffleActivityAccountMonthReqs = raffleActivityAccountMonthDao.queryActivityAccountMonthByUserId(raffleActivityAccountMonthReq);
         if(null == raffleActivityAccountMonthReqs) return null;
         return ActivityAccountMonthEntity.builder()
@@ -301,18 +304,21 @@ public class ActivityRepository implements IActivityRepository {
     }
 
     @Override
-    public ActivityAccountDayEntity queryActivityAccountDayByUserId(String userId, Long activityId) {
+    public ActivityAccountDayEntity queryActivityAccountDayByUserId(String userId, Long activityId, String day) {
+        // 1. 查询账户
         RaffleActivityAccountDay raffleActivityAccountDayReq = new RaffleActivityAccountDay();
         raffleActivityAccountDayReq.setUserId(userId);
         raffleActivityAccountDayReq.setActivityId(activityId);
-        RaffleActivityAccountDay raffleActivityAccountDayReqs = raffleActivityAccountDayDao.queryActivityAccountDayByUserId(raffleActivityAccountDayReq);
-        if(null == raffleActivityAccountDayReqs) return null;
+        raffleActivityAccountDayReq.setDay(day);
+        RaffleActivityAccountDay raffleActivityAccountDayRes = raffleActivityAccountDayDao.queryActivityAccountDayByUserId(raffleActivityAccountDayReq);
+        if(null == raffleActivityAccountDayRes) return null;
+        // 2. 转换对象
         return ActivityAccountDayEntity.builder()
-                .userId(raffleActivityAccountDayReqs.getUserId())
-                .activityId(raffleActivityAccountDayReqs.getActivityId())
-                .day(raffleActivityAccountDayReqs.getDay())
-                .dayCount(raffleActivityAccountDayReqs.getDayCount())
-                .dayCountSurplus(raffleActivityAccountDayReqs.getDayCountSurplus())
+                .userId(raffleActivityAccountDayRes.getUserId())
+                .activityId(raffleActivityAccountDayRes.getActivityId())
+                .day(raffleActivityAccountDayRes.getDay())
+                .dayCount(raffleActivityAccountDayRes.getDayCount())
+                .dayCountSurplus(raffleActivityAccountDayRes.getDayCountSurplus())
                 .build();
     }
 
@@ -441,6 +447,23 @@ public class ActivityRepository implements IActivityRepository {
         }finally {
             dbRouter.clear();
         }
+    }
+
+    @Override
+    public List<ActivitySkuEntity> queryActivitySkuListByActivityId(Long activityId) {
+        //直接从数据库中查询
+        List<RaffleActivitySku> raffleActivitySkus = raffleActivitySkuDao.queryActivitySkuListByActivityId(activityId);
+        List<ActivitySkuEntity> activitySkuEntities = new ArrayList<>();
+        for(RaffleActivitySku raffleActivitySku : raffleActivitySkus){
+            ActivitySkuEntity activitySkuEntity = new ActivitySkuEntity();
+            activitySkuEntity.setSku(raffleActivitySku.getSku());
+            activitySkuEntity.setActivityId(raffleActivitySku.getActivityId());
+            activitySkuEntity.setActivityCountId(raffleActivitySku.getActivityCountId());
+            activitySkuEntity.setStockCount(raffleActivitySku.getStockCount());
+            activitySkuEntity.setStockCountSurplus(raffleActivitySku.getStockCountSurplus());
+            activitySkuEntities.add(activitySkuEntity);
+        }
+        return activitySkuEntities;
     }
 
 }

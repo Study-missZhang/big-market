@@ -33,7 +33,7 @@ public class AwardService implements IAwardService{
 
         BaseEvent.EventMessage<SendAwardMessageEvent.SendAwardMessage> sendAwardMessageEventMessage = sendAwardMessageEvent.buildEventMessage(sendAwardMessage);
 
-        //再构建Task任务对象
+        // 构建任务对象
         TaskEntity taskEntity = new TaskEntity();
         taskEntity.setUserId(userAwardRecordEntity.getUserId());
         taskEntity.setTopic(sendAwardMessageEvent.topic());
@@ -41,12 +41,13 @@ public class AwardService implements IAwardService{
         taskEntity.setMessage(sendAwardMessageEventMessage);
         taskEntity.setState(TaskStateVO.create);
 
-        //构建聚合对象
-        UserAwardRecordAggregate userAwardRecordAggregate = new UserAwardRecordAggregate();
-        userAwardRecordAggregate.setUserAwardRecordEntity(userAwardRecordEntity);
-        userAwardRecordAggregate.setTaskEntity(taskEntity);
+        // 构建聚合对象
+        UserAwardRecordAggregate userAwardRecordAggregate = UserAwardRecordAggregate.builder()
+                .taskEntity(taskEntity)
+                .userAwardRecordEntity(userAwardRecordEntity)
+                .build();
 
-        //存储聚合对象 - 一个事务下，用户的中奖记录
+        // 存储聚合对象 - 一个事务下，用户的中奖记录
         awardRepository.saveUserAwardRecord(userAwardRecordAggregate);
     }
 }

@@ -6,6 +6,7 @@ import com.zky.domain.activity.model.entity.*;
 import com.zky.domain.activity.model.valobj.ActivitySkuStockKeyVO;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author: ZhangKaiYuan
@@ -41,10 +42,12 @@ public interface IActivityRepository {
 
     ActivityAccountEntity queryActivityAccountByUserId(String userId, Long activityId);
 
-    ActivityAccountMonthEntity queryActivityAccountMonthByUserId(String userId, Long activityId);
+    ActivityAccountMonthEntity queryActivityAccountMonthByUserId(String userId, Long activityId, String month);
 
-    ActivityAccountDayEntity queryActivityAccountDayByUserId(String userId, Long activityId);
+    ActivityAccountDayEntity queryActivityAccountDayByUserId(String userId, Long activityId, String day);
+
 
     void saveCreatePartakeOrderAggregate(CreatePartakeOrderAggregate createPartakeOrderAggregate);
 
+    List<ActivitySkuEntity> queryActivitySkuListByActivityId(Long activityId);
 }

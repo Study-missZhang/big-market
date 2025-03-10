@@ -64,6 +64,13 @@ public class StrategyArmoryDispatch implements IStrategyArmory, IStrategyDispatc
         return true;
     }
 
+    @Override
+    public boolean assembleLotteryStrategyByActivityId(Long activityId) {
+        //通过activityId进行策略预热
+        Long strategyId = repository.queryStrategyIdByActivityId(activityId);
+        return assembleLotteryStrategy(strategyId);
+    }
+
 
     private void assembleLotteryStrategy(String key, List<StrategyAwardEntity> strategyAwardEntities) {
         // 1. 获取最小概率值

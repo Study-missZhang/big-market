@@ -17,6 +17,8 @@ import lombok.NoArgsConstructor;
 public class RaffleAwardEntity {
     /** 抽奖奖品ID - 内部流转使用 */
     private Integer awardId;
+    /** 抽奖奖品标题 */
+    private String awardTitle;
     /** 奖品配置信息 */
     private String awardConfig;
     /** 奖品顺序号 */
