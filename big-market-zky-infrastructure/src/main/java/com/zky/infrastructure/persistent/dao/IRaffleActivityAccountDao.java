@@ -2,6 +2,7 @@ package com.zky.infrastructure.persistent.dao;
 
 import cn.bugstack.middleware.db.router.annotation.DBRouter;
 import com.zky.infrastructure.persistent.po.RaffleActivityAccount;
+import com.zky.infrastructure.persistent.po.RaffleActivityAccountDay;
 import com.zky.infrastructure.persistent.po.RaffleActivityOrder;
 import org.apache.ibatis.annotations.Mapper;
 

@@ -18,4 +18,7 @@ public interface IRaffleActivityAccountDayDao {
     int updateActivityAccountDay(RaffleActivityAccountDay raffleActivityAccountDay);
 
     void insertActivityAccountDay(RaffleActivityAccountDay build);
+
+    @DBRouter
+    Integer queryRaffleActivityAccountDayPartakeCount(RaffleActivityAccountDay raffleActivityAccountDay);
 }

@@ -59,8 +59,17 @@ public interface IStrategyRepository {
      */
     void awardStockConsumeSendQueue(StrategyAwardStockKeyVO strategyAwardStockKeyVO);
 
+    /**
+     * 获取奖品库存消费队列
+     */
     StrategyAwardStockKeyVO takeQueueValue() throws InterruptedException;
 
+    /**
+     * 更新奖品库存消耗
+     *
+     * @param strategyId 策略ID
+     * @param awardId    奖品ID
+     */
     void updateStrategyAwardStock(Long strategyId, Integer awardId);
 
     /**
@@ -78,5 +87,20 @@ public interface IStrategyRepository {
      */
     Long queryStrategyIdByActivityId(Long activityId);
 
+    /**
+     * 查询用户抽奖次数 - 当天的；策略ID:活动ID 1:1 的配置，可以直接用 strategyId 查询。
+     *
+     * @param userId     用户ID
+     * @param strategyId 策略ID
+     * @return 用户今日参与次数
+     */
     Integer queryTodayUserRaffleCount(String userId, Long strategyId);
+
+    /**
+     * 根据规则树ID集合查询奖品中加锁数量的配置「部分奖品需要抽奖N次解锁」
+     *
+     * @param treeIds 规则树ID值
+     * @return key 规则树，value rule_lock 加锁值
+     */
+    Map<String, Integer> queryAwardRuleLockCount(String[] treeIds);
 }
