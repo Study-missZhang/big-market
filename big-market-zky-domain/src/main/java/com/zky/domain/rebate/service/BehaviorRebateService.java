@@ -33,17 +33,16 @@ public class BehaviorRebateService implements IBehaviorRebateService{
 
     @Override
     public List<String> createOrder(BehaviorEntity behaviorEntity) {
-        //1.查询返利配置
-        List<DailyBehaviorRebateVO> dailyBehaviorRebateVOs= behaviorRebateRepository.queryDailyBehaviorRebateConfig(behaviorEntity.getBehaviorTypeVO());
-        if(null == dailyBehaviorRebateVOs || dailyBehaviorRebateVOs.isEmpty()) return new ArrayList<>();
+        // 1. 查询返利配置
+        List<DailyBehaviorRebateVO> dailyBehaviorRebateVOS = behaviorRebateRepository.queryDailyBehaviorRebateConfig(behaviorEntity.getBehaviorTypeVO());
+        if (null == dailyBehaviorRebateVOS || dailyBehaviorRebateVOS.isEmpty()) return new ArrayList<>();
 
-        //2.构建聚合对象
+        // 2. 构建聚合对象
         List<String> orderIds = new ArrayList<>();
         List<BehaviorRebateAggregate> behaviorRebateAggregates = new ArrayList<>();
-        for(DailyBehaviorRebateVO dailyBehaviorRebateVO : dailyBehaviorRebateVOs){
-            //拼装唯一的业务ID: 用户ID_返利类型_外部透彻业务ID
+        for (DailyBehaviorRebateVO dailyBehaviorRebateVO : dailyBehaviorRebateVOS) {
+            // 拼装业务ID；用户ID_返利类型_外部透彻业务ID
             String bizId = behaviorEntity.getUserId() + Constants.UNDERLINE + dailyBehaviorRebateVO.getRebateType() + Constants.UNDERLINE + behaviorEntity.getOutBusinessNo();
-            //返利订单对象构建
             BehaviorRebateOrderEntity behaviorRebateOrderEntity = BehaviorRebateOrderEntity.builder()
                     .userId(behaviorEntity.getUserId())
                     .orderId(RandomStringUtils.randomNumeric(12))
@@ -56,29 +55,29 @@ public class BehaviorRebateService implements IBehaviorRebateService{
             orderIds.add(behaviorRebateOrderEntity.getOrderId());
 
             //MQ 消息对象
-            SendRebateMessageEvent.RebateMessage rebateMessage = new SendRebateMessageEvent.RebateMessage();
-            rebateMessage.setUserId(behaviorEntity.getUserId());
-            rebateMessage.setRebateType(behaviorRebateOrderEntity.getRebateType());
-            rebateMessage.setRebateConfig(behaviorRebateOrderEntity.getRebateConfig());
-            rebateMessage.setRebateDesc(behaviorRebateOrderEntity.getRebateDesc());
-            rebateMessage.setBizId(bizId);
+            SendRebateMessageEvent.RebateMessage rebateMessage = SendRebateMessageEvent.RebateMessage.builder()
+                    .userId(behaviorEntity.getUserId())
+                    .rebateType(dailyBehaviorRebateVO.getRebateType())
+                    .rebateConfig(dailyBehaviorRebateVO.getRebateConfig())
+                    .bizId(bizId)
+                    .build();
 
-            //构建消息对象
+            // 构建事件消息
             BaseEvent.EventMessage<SendRebateMessageEvent.RebateMessage> rebateMessageEventMessage = sendRebateMessageEvent.buildEventMessage(rebateMessage);
 
             //Task对象构建
-            TaskEntity task = new TaskEntity();
-            task.setUserId(behaviorEntity.getUserId());
-            task.setTopic(sendRebateMessageEvent.topic());
-            task.setMessageId(rebateMessageEventMessage.getId());
-            task.setMessage(rebateMessageEventMessage);
-            task.setState(TaskStateVO.create);
+            TaskEntity taskEntity = new TaskEntity();
+            taskEntity.setUserId(behaviorEntity.getUserId());
+            taskEntity.setTopic(sendRebateMessageEvent.topic());
+            taskEntity.setMessageId(rebateMessageEventMessage.getId());
+            taskEntity.setMessage(rebateMessageEventMessage);
+            taskEntity.setState(TaskStateVO.create);
 
             //聚合对象存入
             BehaviorRebateAggregate behaviorRebateAggregate = BehaviorRebateAggregate.builder()
                     .userId(behaviorEntity.getUserId())
                     .behaviorRebateOrderEntity(behaviorRebateOrderEntity)
-                    .task(task)
+                    .task(taskEntity)
                     .build();
             behaviorRebateAggregates.add(behaviorRebateAggregate);
         }
