@@ -71,6 +71,7 @@ services:
       retries: 3
 
   # RedisAdmin https://github.com/joeferner/redis-commander
+  # 账密 admin/admin
   redis-admin:
     image: spryker/redis-commander:0.8.0
     container_name: redis-admin
