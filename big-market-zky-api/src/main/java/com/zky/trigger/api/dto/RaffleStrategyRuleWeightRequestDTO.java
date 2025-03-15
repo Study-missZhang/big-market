@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 public class RaffleStrategyRuleWeightRequestDTO {
     /** 用户ID */
-    String userId;
+    private String userId;
     /** 活动ID */
-    Long activityId;
+    private Long activityId;
 }
