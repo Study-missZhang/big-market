@@ -4,6 +4,7 @@ import com.zky.domain.strategy.model.entity.StrategyAwardEntity;
 import com.zky.domain.strategy.model.entity.StrategyEntity;
 import com.zky.domain.strategy.model.entity.StrategyRuleEntity;
 import com.zky.domain.strategy.model.valobj.RuleTreeVO;
+import com.zky.domain.strategy.model.valobj.RuleWeightVO;
 import com.zky.domain.strategy.model.valobj.StrategyAwardRuleModelVO;
 import com.zky.domain.strategy.model.valobj.StrategyAwardStockKeyVO;
 
@@ -113,4 +114,19 @@ public interface IStrategyRepository {
      * @return key 规则树，value rule_lock 加锁值
      */
     Map<String, Integer> queryAwardRuleLockCount(String[] treeIds);
+
+    /**
+     * 根据用户ID，策略ID查询用户活动账户总使用量
+     * @param userId 用户ID
+     * @param strategyId 策略ID
+     * @return 总使用量
+     */
+    Integer queryActivityAccountTotalUseCount(String userId, Long strategyId);
+
+    /**
+     * 根据策略ID，查询奖品权重配置
+     * @param strategyId 策略ID
+     * @return 奖品权重配置
+     */
+    List<RuleWeightVO> queryAwardRuleWeight(Long strategyId);
 }

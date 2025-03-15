@@ -1,6 +1,7 @@
 package com.zky.domain.rebate.repository;
 
 import com.zky.domain.rebate.model.aggregate.BehaviorRebateAggregate;
+import com.zky.domain.rebate.model.entity.BehaviorRebateOrderEntity;
 import com.zky.domain.rebate.model.valobj.BehaviorTypeVO;
 import com.zky.domain.rebate.model.valobj.DailyBehaviorRebateVO;
 
@@ -15,4 +16,6 @@ public interface IBehaviorRebateRepository {
     List<DailyBehaviorRebateVO> queryDailyBehaviorRebateConfig(BehaviorTypeVO behaviorTypeVO);
 
     void saveUserRebateRecord(String userId, List<BehaviorRebateAggregate> behaviorRebateAggregates);
+
+    List<BehaviorRebateOrderEntity> queryOrderByOutBusinessNo(String userId, String outBusinessNo);
 }

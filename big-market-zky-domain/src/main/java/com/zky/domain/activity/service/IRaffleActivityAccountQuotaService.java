@@ -1,5 +1,6 @@
 package com.zky.domain.activity.service;
 
+import com.zky.domain.activity.model.entity.ActivityAccountEntity;
 import com.zky.domain.activity.model.entity.SkuRechargeEntity;
 
 /**
@@ -27,4 +28,20 @@ public interface IRaffleActivityAccountQuotaService {
      * @return 日参与次数
      */
     Integer queryRaffleActivityAccountDayPartakeCount(Long activityId, String userId);
+
+    /**
+     * 查询活动账户 - 总、日、月参与次数
+     * @param userId 用户ID
+     * @param activityId 活动ID
+     * @return 账户实体对象
+     */
+    ActivityAccountEntity queryRaffleActivityAccount(String userId, Long activityId);
+
+    /**
+     * 查询活动账户 - 总次数
+     * @param userId 用户ID
+     * @param activityId 活动ID
+     * @return 用户总次数
+     */
+    Integer queryRaffleActivityAccountPartakeCount(String userId, Long activityId);
 }
