@@ -1,5 +1,6 @@
 package com.zky.domain.award.service;
 
+import com.zky.domain.award.model.entity.DistributeAwardEntity;
 import com.zky.domain.award.model.entity.UserAwardRecordEntity;
 
 /**
@@ -14,4 +15,11 @@ public interface IAwardService {
      * @param userAwardRecordEntity
      */
     void saveUserAwardRecord(UserAwardRecordEntity userAwardRecordEntity);
+
+
+    /**
+     * 配送发货奖品
+     * @param distributeAwardEntity
+     */
+    void distributeAward(DistributeAwardEntity distributeAwardEntity);
 }
