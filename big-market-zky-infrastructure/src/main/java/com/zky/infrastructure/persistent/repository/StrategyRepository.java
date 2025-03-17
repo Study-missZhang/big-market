@@ -47,6 +47,8 @@ public class StrategyRepository implements IStrategyRepository {
     @Resource
     private IRuleTreeNodeLineDao ruleTreeNodeLineDao;
     @Resource
+    private IRaffleActivityAccountDao raffleActivityAccountDao;
+    @Resource
     private IRaffleActivityDao raffleActivityDao;
     @Resource
     private IRaffleActivityAccountDayDao raffleActivityAccountDayDao;
@@ -340,7 +342,7 @@ public class StrategyRepository implements IStrategyRepository {
     @Override
     public Integer queryActivityAccountTotalUseCount(String userId, Long strategyId) {
         Long activityId = raffleActivityDao.queryActivityIdByStrategyId(strategyId);
-        RaffleActivityAccount raffleActivityAccount = raffleActivityAccountDayDao.queryActivityAccountByUserId(RaffleActivityAccount.builder()
+        RaffleActivityAccount raffleActivityAccount = raffleActivityAccountDao.queryActivityAccountByUserId(RaffleActivityAccount.builder()
                 .userId(userId)
                 .activityId(activityId)
                 .build());

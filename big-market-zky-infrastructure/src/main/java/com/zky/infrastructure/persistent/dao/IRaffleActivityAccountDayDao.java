@@ -25,5 +25,5 @@ public interface IRaffleActivityAccountDayDao {
 
     void addAccountQuota(RaffleActivityAccountDay raffleActivityAccountDay);
 
-    RaffleActivityAccount queryActivityAccountByUserId(RaffleActivityAccount build);
+    //RaffleActivityAccount queryActivityAccountByUserId(RaffleActivityAccount build);
 }
