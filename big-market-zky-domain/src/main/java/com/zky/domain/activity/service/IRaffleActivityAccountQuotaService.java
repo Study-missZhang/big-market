@@ -1,6 +1,7 @@
 package com.zky.domain.activity.service;
 
 import com.zky.domain.activity.model.entity.ActivityAccountEntity;
+import com.zky.domain.activity.model.entity.DeliveryOrderEntity;
 import com.zky.domain.activity.model.entity.SkuRechargeEntity;
 
 /**
@@ -20,6 +21,12 @@ public interface IRaffleActivityAccountQuotaService {
      * @return 活动ID
      */
     String createSkuRechargeOrder(SkuRechargeEntity skuRechargeEntity);
+
+    /**
+     * 订单出货 - 积分支付
+     * @param deliveryOrderEntity 出货实体
+     */
+    void updateOrder(DeliveryOrderEntity deliveryOrderEntity);
 
     /**
      * 查询活动账户 - 日参与次数

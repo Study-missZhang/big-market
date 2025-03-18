@@ -1,6 +1,6 @@
 package com.zky.domain.activity.repository;
 
-import com.zky.domain.activity.model.aggregate.CreateOrderAggregate;
+import com.zky.domain.activity.model.aggregate.CreateQuotaOrderAggregate;
 import com.zky.domain.activity.model.aggregate.CreatePartakeOrderAggregate;
 import com.zky.domain.activity.model.entity.*;
 import com.zky.domain.activity.model.valobj.ActivitySkuStockKeyVO;
@@ -22,7 +22,8 @@ public interface IActivityRepository {
     ActivityEntity queryRaffleActivityByActivityId(Long activityId);
     ActivityCountEntity queryRaffleActivityCountByActivityCountId(Long activityCountId);
 
-    void doSaveOrder(CreateOrderAggregate createOrderAggregate);
+    void doSaveNoPayOrder(CreateQuotaOrderAggregate createQuotaOrderAggregate);
+    void doSaveCreditPayOrder(CreateQuotaOrderAggregate createQuotaOrderAggregate);
 
     void cacheActivitySkuStockCount(String cacheKey, Integer stockCount);
 
@@ -56,4 +57,6 @@ public interface IActivityRepository {
     ActivityAccountEntity queryRaffleActivityAccount(String userId, Long activityId);
 
     Integer queryRaffleActivityAccountPartakeCount(String userId, Long activityId);
+
+    void updateOrder(DeliveryOrderEntity deliveryOrderEntity);
 }

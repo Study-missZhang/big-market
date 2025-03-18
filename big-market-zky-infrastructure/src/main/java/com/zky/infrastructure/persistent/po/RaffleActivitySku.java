@@ -2,6 +2,7 @@ package com.zky.infrastructure.persistent.po;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -23,6 +24,8 @@ public class RaffleActivitySku {
     private int stockCount;
     /** 剩余库存 **/
     private int stockCountSurplus;
+    /** 商品金额【积分】 */
+    private BigDecimal productAmount;
     /** 创建时间 **/
     private Date createTime;
     /** 更新时间 **/

@@ -2,6 +2,7 @@ package com.zky.infrastructure.persistent.po;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -33,6 +34,8 @@ public class RaffleActivityOrder {
     private int dayCount;
     /** 月次数 **/
     private int monthCount;
+    /** 支付金额【积分】 */
+    private BigDecimal payAmount;
     /** 订单状态（not_used、used、expire） **/
     private String state;
     /** 业务仿重ID - 外部透传的，确保幂等 **/

@@ -1,6 +1,7 @@
 package com.zky.infrastructure.persistent.dao;
 
 import cn.bugstack.middleware.db.router.annotation.DBRouter;
+import com.zky.infrastructure.persistent.po.RaffleActivityAccount;
 import com.zky.infrastructure.persistent.po.RaffleActivityAccountMonth;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -20,4 +21,5 @@ public interface IRaffleActivityAccountMonthDao {
     void insertActivityAccountMonth(RaffleActivityAccountMonth raffleActivityAccountMonth);
 
     void addAccountQuota(RaffleActivityAccountMonth raffleActivityAccountMonth);
+
 }

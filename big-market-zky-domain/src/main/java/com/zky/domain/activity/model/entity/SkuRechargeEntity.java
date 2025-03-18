@@ -1,5 +1,6 @@
 package com.zky.domain.activity.model.entity;
 
+import com.zky.domain.activity.model.valobj.OrderTradeTypeVO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,9 +12,6 @@ import lombok.NoArgsConstructor;
  * @create: 2025/2/27
  */
 @Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class SkuRechargeEntity {
     /** 用户ID **/
     private String userId;
@@ -21,4 +19,6 @@ public class SkuRechargeEntity {
     private Long sku;
     /** 业务仿重ID - 外部透传的，确保幂等 **/
     private String outBusinessNo;
+    /** 用户订单交易类型 */
+    private OrderTradeTypeVO orderTradeTypeVO = OrderTradeTypeVO.rebate_no_pay_trade;
 }

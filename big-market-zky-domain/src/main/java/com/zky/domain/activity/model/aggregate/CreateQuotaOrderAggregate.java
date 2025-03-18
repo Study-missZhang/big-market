@@ -1,7 +1,7 @@
 package com.zky.domain.activity.model.aggregate;
 
-import com.zky.domain.activity.model.entity.ActivityAccountEntity;
 import com.zky.domain.activity.model.entity.ActivityOrderEntity;
+import com.zky.domain.activity.model.valobj.OrderStateVO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateOrderAggregate {
+public class CreateQuotaOrderAggregate {
 
     /**
      * 用户ID
@@ -44,4 +44,8 @@ public class CreateOrderAggregate {
     private Integer monthCount;
     /** 活动订单实体 **/
     private ActivityOrderEntity activityOrderEntity;
+
+    public void setOrderState(OrderStateVO orderState){
+        this.activityOrderEntity.setState(orderState);
+    }
 }
