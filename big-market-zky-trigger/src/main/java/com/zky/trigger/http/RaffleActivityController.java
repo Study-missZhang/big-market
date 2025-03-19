@@ -285,7 +285,7 @@ public class RaffleActivityController implements IRaffleActivityService {
             if(StringUtils.isBlank(request.getUserId()) || null == request.getActivityId()){
                 throw new AppException(ResponseCode.ILLEGAL_PARAMETER.getCode(), ResponseCode.ILLEGAL_PARAMETER.getInfo());
             }
-            ActivityAccountEntity activityAccountEntity = raffleActivityAccountQuotaService.queryRaffleActivityAccount(request.getUserId(), request.getActivityId());
+            ActivityAccountEntity activityAccountEntity = raffleActivityAccountQuotaService.queryActivityAccountEntity(request.getUserId(), request.getActivityId());
             UserActivityAccountResponseDTO userActivityAccountResponseDTO = UserActivityAccountResponseDTO.builder()
                         .totalCount(activityAccountEntity.getTotalCount())
                         .totalCountSurplus(activityAccountEntity.getTotalCountSurplus())

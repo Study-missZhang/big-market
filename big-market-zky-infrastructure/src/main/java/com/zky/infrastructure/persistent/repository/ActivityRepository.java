@@ -542,7 +542,7 @@ public class ActivityRepository implements IActivityRepository {
     }
 
     @Override
-    public ActivityAccountEntity queryRaffleActivityAccount(String userId, Long activityId) {
+    public ActivityAccountEntity queryActivityAccountEntity(String userId, Long activityId) {
         //1.查询总账户
         RaffleActivityAccount raffleActivityAccount = raffleActivityAccountDao.queryActivityAccountByUserId(RaffleActivityAccount.builder()
                 .userId(userId)
@@ -564,14 +564,16 @@ public class ActivityRepository implements IActivityRepository {
 
         //2.查询月账户
         RaffleActivityAccountMonth raffleActivityAccountMonth = raffleActivityAccountMonthDao.queryActivityAccountMonthByUserId(RaffleActivityAccountMonth.builder()
-                .userId(userId)
                 .activityId(activityId)
+                .userId(userId)
+                .month(RaffleActivityAccountMonth.currentMonth())
                 .build());
 
         //3.查询日账户
         RaffleActivityAccountDay raffleActivityAccountDay = raffleActivityAccountDayDao.queryActivityAccountDayByUserId(RaffleActivityAccountDay.builder()
-                .userId(userId)
                 .activityId(activityId)
+                .userId(userId)
+                .day(RaffleActivityAccountDay.currentDay())
                 .build());
 
         //4.组装对象

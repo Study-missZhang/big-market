@@ -43,7 +43,7 @@ public interface IRaffleActivityAccountQuotaService {
      * @param activityId 活动ID
      * @return 账户实体对象
      */
-    ActivityAccountEntity queryRaffleActivityAccount(String userId, Long activityId);
+    ActivityAccountEntity queryActivityAccountEntity(String userId, Long activityId);
 
     /**
      * 查询活动账户 - 总次数
