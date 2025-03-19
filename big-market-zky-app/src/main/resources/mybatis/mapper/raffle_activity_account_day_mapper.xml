@@ -19,7 +19,7 @@
         where user_id = #{userId} and activity_id = #{activityId} and day = #{day}
     </select>
 
-    <update id="updateActivityAccountDay" parameterType="com.zky.infrastructure.persistent.po.RaffleActivityAccountDay">
+    <update id="updateActivityAccountDaySubtractionQuota" parameterType="com.zky.infrastructure.persistent.po.RaffleActivityAccountDay">
         update raffle_activity_account_day
         set
             day_count_surplus = day_count_surplus - 1,

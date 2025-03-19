@@ -16,7 +16,7 @@ public interface IRaffleActivityAccountDayDao {
     RaffleActivityAccountDay queryActivityAccountDayByUserId(RaffleActivityAccountDay raffleActivityAccountDayReq);
 
 
-    int updateActivityAccountDay(RaffleActivityAccountDay raffleActivityAccountDay);
+    //int updateActivityAccountDay(RaffleActivityAccountDay raffleActivityAccountDay);
 
     void insertActivityAccountDay(RaffleActivityAccountDay build);
 
@@ -24,6 +24,8 @@ public interface IRaffleActivityAccountDayDao {
     Integer queryRaffleActivityAccountDayPartakeCount(RaffleActivityAccountDay raffleActivityAccountDay);
 
     void addAccountQuota(RaffleActivityAccountDay raffleActivityAccountDay);
+
+    int updateActivityAccountDaySubtractionQuota(RaffleActivityAccountDay build);
 
     //RaffleActivityAccount queryActivityAccountByUserId(RaffleActivityAccount build);
 }

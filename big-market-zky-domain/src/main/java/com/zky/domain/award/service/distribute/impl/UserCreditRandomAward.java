@@ -53,15 +53,12 @@ public class UserCreditRandomAward implements IDistributeAward {
                 distributeAwardEntity.getAwardId(),
                 AwardStateVO.complete
         );
-        UserCreditAwardEntity userCreditAwardEntity = GiveOutPrizesAggregate.buildUserCreditAwardEntity(
-                distributeAwardEntity.getUserId(),
-                creditAmount
-        );
-        GiveOutPrizesAggregate giveOutPrizesAggregate = GiveOutPrizesAggregate.builder()
-                .userId(distributeAwardEntity.getUserId())
-                .userAwardRecordEntity(userAwardRecordEntity)
-                .userCreditAwardEntity(userCreditAwardEntity)
-                .build();
+        UserCreditAwardEntity userCreditAwardEntity = GiveOutPrizesAggregate.buildUserCreditAwardEntity(distributeAwardEntity.getUserId(), creditAmount);
+
+        GiveOutPrizesAggregate giveOutPrizesAggregate = new GiveOutPrizesAggregate();
+        giveOutPrizesAggregate.setUserId(distributeAwardEntity.getUserId());
+        giveOutPrizesAggregate.setUserAwardRecordEntity(userAwardRecordEntity);
+        giveOutPrizesAggregate.setUserCreditAwardEntity(userCreditAwardEntity);
 
         //存储发奖对象
         repository.saveGiveOutPrizesAggregate(giveOutPrizesAggregate);

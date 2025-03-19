@@ -17,8 +17,8 @@
         from award
         limit 10
     </select>
-    
-    <select id="queryAwardConfigByAward" parameterType="java.lang.Integer" resultType="java.lang.String">
+
+    <select id="queryAwardConfigByAwardId" parameterType="java.lang.Integer" resultType="java.lang.String">
         select award_config from award where award_id = #{awardId}
     </select>
 
