@@ -5,6 +5,7 @@ import com.zky.domain.activity.model.aggregate.CreatePartakeOrderAggregate;
 import com.zky.domain.activity.model.entity.*;
 import com.zky.domain.activity.model.valobj.ActivitySkuStockKeyVO;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -63,4 +64,7 @@ public interface IActivityRepository {
     UnpaidActivityOrderEntity queryUnpaidActivityOrder(SkuRechargeEntity skuRechargeEntity);
 
     List<SkuProductEntity> querySkuProductEntityListByActivityId(Long activityId);
+
+    BigDecimal queryUserCreditAccountAmount(String userId);
+
 }

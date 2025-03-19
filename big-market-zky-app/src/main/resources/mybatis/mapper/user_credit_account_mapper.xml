@@ -18,6 +18,12 @@
         available_amount = available_amount + #{availableAmount}
         where user_id = #{userId}
     </update>
+
+    <update id="updateSubtractionAmount" parameterType="com.zky.infrastructure.persistent.po.UserCreditAccount">
+        update user_credit_account set
+            available_amount = available_amount + #{availableAmount}
+        where user_id = #{userId} and available_amount > 0
+    </update>
     
     <insert id="insert" parameterType="com.zky.infrastructure.persistent.po.UserCreditAccount">
         insert into user_credit_account(
