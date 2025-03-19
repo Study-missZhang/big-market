@@ -12,6 +12,9 @@ import lombok.NoArgsConstructor;
  * @create: 2025/2/27
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class SkuRechargeEntity {
     /** 用户ID **/
     private String userId;

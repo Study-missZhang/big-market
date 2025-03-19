@@ -3,6 +3,7 @@ package com.zky.domain.activity.service;
 import com.zky.domain.activity.model.entity.ActivityAccountEntity;
 import com.zky.domain.activity.model.entity.DeliveryOrderEntity;
 import com.zky.domain.activity.model.entity.SkuRechargeEntity;
+import com.zky.domain.activity.model.entity.UnpaidActivityOrderEntity;
 
 /**
  * @author: ZhangKaiYuan
@@ -20,7 +21,7 @@ public interface IRaffleActivityAccountQuotaService {
      * @param skuRechargeEntity 活动商品充值实体对象
      * @return 活动ID
      */
-    String createSkuRechargeOrder(SkuRechargeEntity skuRechargeEntity);
+    UnpaidActivityOrderEntity createSkuRechargeOrder(SkuRechargeEntity skuRechargeEntity);
 
     /**
      * 订单出货 - 积分支付
