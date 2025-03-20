@@ -30,28 +30,28 @@ public class DCCValueBeanFactory implements BeanPostProcessor {
     private final Map<String, Object> dccObjGroup = new HashMap<>();
 
 
+
     public DCCValueBeanFactory(CuratorFramework client) throws Exception {
         this.client = client;
 
-        //节点判断
-        if(null == client.checkExists().forPath(BASE_CONFIG_PATH_CONFIG)){
+        // 节点判断
+        if (null == client.checkExists().forPath(BASE_CONFIG_PATH_CONFIG)) {
             client.create().creatingParentsIfNeeded().forPath(BASE_CONFIG_PATH_CONFIG);
             log.info("DCC 节点监听 base node {} not absent create new done!", BASE_CONFIG_PATH_CONFIG);
         }
-
         //CuratorCache 是 Curator 提供的一个缓存组件，监听 Zookeeper 节点的数据变化，并缓存节点的最新数据。
         CuratorCache curatorCache = CuratorCache.build(client, BASE_CONFIG_PATH_CONFIG);
         curatorCache.start();
-
         //给CuratorCache添加一个监听器，数据发生改变时触发。
         curatorCache.listenable().addListener((type, oldData, data) -> {
-            switch (type){
+            switch (type) {
                 case NODE_CHANGED:
                     String dccValuePath = data.getPath();
                     Object objBean = dccObjGroup.get(dccValuePath);
-                    if(null == objBean) return;
+                    if (null == objBean) return;
                     try {
-                        //通过反射获取到objBean对应类中的与dccValuePath相关联的字段。
+                        // 1. getDeclaredField 方法使用反射获取指定类中声明的所有字段，包括私有字段、受保护字段和公共字段。
+                        // 2. getField 方法用于获取指定类中的公共字段，即只能获取到公共访问修饰符（public）的字段。
                         Field field = objBean.getClass().getDeclaredField(dccValuePath.substring(dccValuePath.lastIndexOf("/") + 1));
                         field.setAccessible(true);
                         field.set(objBean, new String(data.getData()));
@@ -100,9 +100,9 @@ public class DCCValueBeanFactory implements BeanPostProcessor {
             try{
                 //判断当前节点是否存在，如果不存在则创建 Zookeeper 节点
                 String keyPath = BASE_CONFIG_PATH_CONFIG.concat("/").concat(key);
-                if(null == client.checkExists().forPath(keyPath)){
+                if (null == client.checkExists().forPath(keyPath)) {
                     client.create().creatingParentsIfNeeded().forPath(keyPath);
-                    if(StringUtils.isBlank(defaultValue)){
+                    if (StringUtils.isNotBlank(defaultValue)) {
                         field.setAccessible(true);
                         field.set(bean, defaultValue);
                         field.setAccessible(false);
@@ -110,7 +110,7 @@ public class DCCValueBeanFactory implements BeanPostProcessor {
                     log.info("DCC 节点监听 创建节点 {}", keyPath);
                 }else {
                     String configValue = new String(client.getData().forPath(keyPath));
-                    if(StringUtils.isBlank(configValue)){
+                    if (StringUtils.isNotBlank(configValue)) {
                         field.setAccessible(true);
                         field.set(bean, configValue);
                         field.setAccessible(false);
