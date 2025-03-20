@@ -118,6 +118,16 @@ redis:
       ping-interval: 60000
       keep-alive: true
 
+#zookeeper
+zookeeper:
+  sdk:
+    config:
+      connect-string: 117.72.112.138:2181
+      base-sleep-time-ms: 1000
+      max-retries: 3
+      session-timeout-ms: 18000
+      connection-timeout-ms: 30000
+
 # 日志
 logging:
   level:

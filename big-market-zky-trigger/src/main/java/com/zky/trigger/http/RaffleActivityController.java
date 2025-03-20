@@ -25,6 +25,7 @@ import com.zky.domain.strategy.service.IRaffleStrategy;
 import com.zky.domain.strategy.service.armory.IStrategyArmory;
 import com.zky.trigger.api.IRaffleActivityService;
 import com.zky.trigger.api.dto.*;
+import com.zky.types.annotations.DCCValue;
 import com.zky.types.enums.ResponseCode;
 import com.zky.types.exception.AppException;
 import com.zky.types.model.Response;
@@ -72,6 +73,8 @@ public class RaffleActivityController implements IRaffleActivityService {
     private ICreditAdjustService creditAdjustService;
     @Resource
     private IRaffleActivitySkuProductService raffleActivitySkuProductService;
+    @DCCValue("degradeSwitch:open")
+    private String degradeSwitch;
 
     /**
      * 活动装配 - 数据预热 | 把活动配置的对应的 sku 一起装配
@@ -134,6 +137,13 @@ public class RaffleActivityController implements IRaffleActivityService {
     public Response<ActivityDrawResponseDTO> draw(@RequestBody ActivityDrawRequestDTO request) {
         try {
             log.info("活动抽奖 userId:{} activityId:{}", request.getUserId(), request.getActivityId());
+            //判断这个值是否做降级处理
+            if(!"open".equals(degradeSwitch)){
+                return Response.<ActivityDrawResponseDTO>builder()
+                        .code(ResponseCode.DEGRADE_SWITCH.getCode())
+                        .info(ResponseCode.DEGRADE_SWITCH.getInfo())
+                        .build();
+            }
             //1.参数校验
             if(StringUtils.isBlank(request.getUserId()) || null == request.getActivityId()){
                 throw new AppException(ResponseCode.ILLEGAL_PARAMETER.getCode(), ResponseCode.ILLEGAL_PARAMETER.getInfo());
