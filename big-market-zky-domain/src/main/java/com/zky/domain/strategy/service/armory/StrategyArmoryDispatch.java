@@ -40,7 +40,7 @@ public class StrategyArmoryDispatch implements IStrategyArmory, IStrategyDispatc
             cacheStrategyAwardCount(strategyId, awardId, awardCount);
         }
 
-        //3.1 默认装配配置【全量抽奖概率】
+        //3.1 默认装配配置【抽奖概率装装配】
         assembleLotteryStrategy(String.valueOf(strategyId), strategyAwardEntities);
 
         // 3.2 权重策略配置 - 适用于 rule_weight 权重规则配置
@@ -57,7 +57,10 @@ public class StrategyArmoryDispatch implements IStrategyArmory, IStrategyDispatc
         for (String key : keys) {
             List<Integer> ruleWeightValues = ruleWeightValueMap.get(key);
             ArrayList<StrategyAwardEntity> strategyAwardEntitiesClone = new ArrayList<>(strategyAwardEntities);
+            //过滤strategyAwardEntitiesClone的奖品，只保留那些 奖品ID 在 ruleWeightValues 中的 StrategyAwardEntity 对象
+            //如果当前 key = 60，并且 ruleWeightValues = [102, 103, 104]，那么仅保留 awardId 为 102, 103, 104 的奖品，其他奖品将被删除。
             strategyAwardEntitiesClone.removeIf(entity -> !ruleWeightValues.contains(entity.getAwardId()));
+            //根据权重装配，进行概率装配
             assembleLotteryStrategy(String.valueOf(strategyId).concat(Constants.UNDERLINE).concat(key), strategyAwardEntitiesClone);
         }
 

@@ -145,12 +145,12 @@ public class RaffleActivityController implements IRaffleActivityService {
         try {
             log.info("活动抽奖 userId:{} activityId:{}", request.getUserId(), request.getActivityId());
             // 0. 降级开关【open 开启、close 关闭】
-            if (StringUtils.isNotBlank(degradeSwitch) && "open".equals(degradeSwitch)) {
+            /*if (StringUtils.isNotBlank(degradeSwitch) && "open".equals(degradeSwitch)) {
                 return Response.<ActivityDrawResponseDTO>builder()
                         .code(ResponseCode.DEGRADE_SWITCH.getCode())
                         .info(ResponseCode.DEGRADE_SWITCH.getInfo())
                         .build();
-            }
+            }*/
             //1.参数校验
             if(StringUtils.isBlank(request.getUserId()) || null == request.getActivityId()){
                 throw new AppException(ResponseCode.ILLEGAL_PARAMETER.getCode(), ResponseCode.ILLEGAL_PARAMETER.getInfo());
